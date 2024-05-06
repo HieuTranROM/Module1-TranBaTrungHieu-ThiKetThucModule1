@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Câu 3:</title>
+</head>
+<body>
+<script>
+    function isPrime(num) {
+        if (num <= 1) {
+            return false;
+        }
+        if (num <= 3) {
+            return true;
+        }
+        if (num % 2 === 0 || num % 3 === 0) {
+            return false;
+        }
+        for (let i = 5; i * i <= num; i += 6) {
+            if (num % i === 0 || num % (i + 2) === 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function findPrimes(inputArray) {
+        const primeArray = [];
+        for (let num of inputArray) {
+            if (isPrime(num)) {
+                primeArray.push(num);
+            }
+        }
+        return primeArray.sort((a, b) => a - b);
+    }
+
+    function inputArrayFromUser() {
+        const input = prompt("Nhập mảng các số nguyên tố, cách nhau bằng dấu phẩy: ");
+        const inputArray = input.split(',').map(Number);
+        return inputArray;
+    }
+
+
+    function main() {
+        const inputArray = inputArrayFromUser();
+        const primeNumbers = findPrimes(inputArray);
+        console.log("Các số nguyên tố có trong mảng là: " + primeNumbers);
+    }
+
+    main();
+</script>
+</body>
+</html>

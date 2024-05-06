@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý điện thoại</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Quản lý điện thoại</h1>
+
+<form id="form-dien-thoai">
+    <label for="ma-dien-thoai">Mã điện thoại:</label>
+    <input type="text" id="ma-dien-thoai" required><br>
+    <label for="ten-dien-thoai">Tên điện thoại:</label>
+    <input type="text" id="ten-dien-thoai" required><br>
+    <label for="hang-san-xuat">Hãng sản xuất:</label>
+    <input type="text" id="hang-san-xuat" required><br>
+    <label for="gia">Giá:</label>
+    <input type="number" id="gia" required><br>
+    <button type="submit">Thêm</button>
+</form>
+
+<h2>Danh sách điện thoại</h2>
+<table id="danh-sach-dien-thoai">
+    <thead>
+    <tr>
+        <th>Mã điện thoại</th>
+        <th>Tên điện thoại</th>
+        <th>Hãng sản xuất</th>
+        <th>Giá</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script>
+    class DienThoai {
+        constructor(maDienThoai, ten, hangSanXuat, gia) {
+            this.maDienThoai = maDienThoai;
+            this.ten = ten;
+            this.hangSanXuat = hangSanXuat;
+            this.gia = gia;
+        }
+    }
+
+    class QuanLyDienThoai {
+        constructor() {
+            this.danhSachDienThoai = [];
+        }
+
+        themDienThoai(dienThoai) {
+            this.danhSachDienThoai.push(dienThoai);
+        }
+
+        hienThiDanhSachSapXep() {
+            const danhSachSapXep = this.danhSachDienThoai.slice().sort((a, b) => a.ten.localeCompare(b.ten));
+            const tbodyElement = document.querySelector('#danh-sach-dien-thoai tbody');
+            tbodyElement.innerHTML = '';
+            danhSachSapXep.forEach(dt => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${dt.maDienThoai}</td>
+                    <td>${dt.ten}</td>
+                    <td>${dt.hangSanXuat}</td>
+                    <td>${dt.gia}</td>
+                `;
+                tbodyElement.appendChild(tr);
+            });
+        }
+    }
+
+    const quanLy = new QuanLyDienThoai();
+
+    document.getElementById('form-dien-thoai').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const maDienThoai = document.getElementById('ma-dien-thoai').value;
+        const tenDienThoai = document.getElementById('ten-dien-thoai').value;
+        const hangSanXuat = document.getElementById('hang-san-xuat').value;
+        const gia = document.getElementById('gia').valueAsNumber;
+
+        const dt = new DienThoai(maDienThoai, tenDienThoai, hangSanXuat, gia);
+        quanLy.themDienThoai(dt);
+        quanLy.hienThiDanhSachSapXep();
+
+        document.getElementById('ma-dien-thoai').value = '';
+        document.getElementById('ten-dien-thoai').value = '';
+        document.getElementById('hang-san-xuat').value = '';
+        document.getElementById('gia').value = '';
+    });
+</script>
+
+</body>
+</html>
